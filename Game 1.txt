@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #gameArea {
+            width: 640px;
+            height: 480px;
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+        .car {
+            width: 32px;
+            height: 32px;
+            background-color: red;
+            position: absolute;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+        .control-button {
+            width: 50px;
+            height: 50px;
+            background-color: gray;
+            border: 1px solid black;
+            margin: 5px;
+            display: inline-block;
+            text-align: center;
+            line-height: 50px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <div id="car" class="car"></div>
+        <div class="controls">
+            <div id="up" class="control-button">↑</div>
+            <div id="left" class="control-button">←</div>
+            <div id="down" class="control-button">↓</div>
+            <div id="right" class="control-button">→</div>
+        </div>
+    </div>
+
+    <script>
+        const car = document.getElementById('car');
+        let carX = 304;
+        let carY = 224;
+        let speed = 5;
+        let keys = {};
+
+        function gameLoop() {
+            if (keys['ArrowUp']) carY -= speed;
+            if (keys['ArrowDown']) carY += speed;
+            if (keys['ArrowLeft']) carX -= speed;
+            if (keys['ArrowRight']) carX += speed;
+            
+            moveCar();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function moveCar() {
+            car.style.left = carX + 'px';
+            car.style.top = carY + 'px';
+        }
+
+        function onButtonDown(direction) {
+            switch(direction) {
+                case 'up': carY -= speed; break;
+                case 'down': carY += speed; break;
+                case 'left': carX -= speed; break;
+                case 'right': carX += speed; break;
+            }
+            moveCar();
+        }
+
+        document.getElementById('up').addEventListener('touchstart', () => onButtonDown('up'));
+        document.getElementById('down').addEventListener('touchstart', () => onButtonDown('down'));
+        document.getElementById('left').addEventListener('touchstart', () => onButtonDown('left'));
+        document.getElementById('right').addEventListener('touchstart', () => onButtonDown('right'));
+
+        gameLoop(); // Start the game loop
+    </script>
+</body>
+</html>
